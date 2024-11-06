@@ -6,18 +6,18 @@
 
 ## Tech Stack / Softwares
 
-- [Bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
 - [Gsap](https://gsap.com/docs/v3)
 - [Git](https://git-scm.com/)
 - [GitHub](https://github.com/)
 - [Figma](https://www.figma.com/)
+- [Flowbite](https://flowbite.com/docs/getting-started/introduction/)
 - [React](https://react.dev/)
 - [React Animated Cursor](https://www.npmjs.com/package/react-animated-cursor)
 - [ReactThreeFiber](https://r3f.docs.pmnd.rs/getting-started/introduction)
 - [Netlify](https://www.netlify.com/)
 - [Nodejs](https://nodejs.org/en/)
-- [nvm](https://github.com/nvm-sh/nvm)
 - [npm](https://www.npmjs.com/)
+- [Tailwind](https://tailwindcss.com/docs/installation)
 - [Threejs](https://threejs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Vite](https://vite.dev/)
