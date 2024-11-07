@@ -131,7 +131,7 @@ const App = () => {
         className={`flex flex-row flex-wrap p-16 place-content-center overflow-auto gap-7`}
       >
         {/* user input */}
-        <div
+        {/* <div
           id="textInputContainer"
           className={`text-sm font-medium  basis-1/4 text-center flex-col self-start w-96 ${animationPopUp}`}
         >
@@ -146,13 +146,13 @@ const App = () => {
               }`}
             ></textarea>
           </div>
-        </div>
+        </div> */}
 
         {/* app branding  */}
         <AppBranding className={`${animationBounce}`} />
 
         {/* preview */}
-        <div
+        {/* <div
           id="preview-container"
           className={` ${animationPopUp} ${animationColorChange}`}
         >
@@ -163,7 +163,7 @@ const App = () => {
           >
             <ReactMarkdown className="">{markdownText}</ReactMarkdown>
           </div>
-        </div>
+        </div> */}
 
         {/* theme switcher */}
         <div id="theme-switch "></div>
