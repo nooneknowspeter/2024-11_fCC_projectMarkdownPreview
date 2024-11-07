@@ -59,7 +59,7 @@ And here. | Okay. | I think we get it.
 
 const TitleBar = (props) => {
   return (
-    <div className="items-center text-center">
+    <div className="text-center">
       <p
         className={`text-base font-bold h-11 select-none drop-shadow-2xl pt-3 ${props.className}`}
       >
@@ -96,7 +96,7 @@ const App = () => {
   const animationColorChange: string = `transition ease-in-out delay-100`;
 
   // misc. vars
-  const containerStyle = "h-dvh max-h-96 p-3 w-96 overflow-auto resize-none";
+  const containerStyle = "h-dvh max-h-96 w-96 p-3 overflow-auto resize-none";
 
   // markdown parsing function
   const markdownParse = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -124,7 +124,7 @@ const App = () => {
       <Background />
       <Theme
         appearance={theme}
-        className={`flex flex-row flex-wrap p-16 place-content-center overflow-auto`}
+        className={`flex flex-row flex-wrap p-16 place-content-center overflow-auto gap-7`}
         panelBackground="transparent"
       >
         {/* user input */}
@@ -132,7 +132,7 @@ const App = () => {
           id="textInputContainer"
           className={`text-sm font-medium  basis-1/4 text-center flex-col self-start w-96 ${animationPopUp}`}
         >
-          <TitleBar title="Text Input" className={themeColor} />
+          <TitleBar title="Text Input" className={`${themeColor}`} />
           <div className={`pt-3   ${themeColor}`}>
             <textarea
               id="editor"
@@ -151,7 +151,7 @@ const App = () => {
         {/* preview */}
         <div
           id="preview-container"
-          className={` basis-1/4 self-end  ${animationPopUp} ${animationColorChange}`}
+          className={` ${animationPopUp} ${animationColorChange}`}
         >
           <TitleBar title="Preview" className={themeColor} />
           <div
@@ -166,7 +166,7 @@ const App = () => {
         <div id="theme-switch "></div>
 
         <Button
-          className={`rounded-full hover:animate-pulse hover:transition-all ease-in-out duration-300 fixed`}
+          className={`hover:animate-pulse hover:transition-all ease-in-out duration-300`}
           color="gray"
           variant="ghost"
           highContrast
@@ -180,7 +180,40 @@ const App = () => {
           )}
         </Button>
       </Theme>
-      <AnimatedCursor />
+
+      {/* animated cursor */}
+      <AnimatedCursor
+        innerSize={8}
+        outerSize={8}
+        color={theme === "dark" ? "256, 256, 256" : "0, 0, 0"}
+        outerAlpha={0.2}
+        innerScale={0.4}
+        outerScale={6}
+        clickables={[
+          "a",
+          'input[type="text"]',
+          'input[type="email"]',
+          'input[type="number"]',
+          'input[type="submit"]',
+          'input[type="image"]',
+          "label[for]",
+          "select",
+          "textarea",
+          "button",
+          ".link",
+          {
+            target: ".custom",
+            options: {
+              innerSize: 8,
+              outerSize: 12,
+              color: "255, 255, 255",
+              outerAlpha: 0.3,
+              innerScale: 0.7,
+              outerScale: 5,
+            },
+          },
+        ]}
+      />
     </>
   );
 };
