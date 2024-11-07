@@ -27,4 +27,4 @@
 
 ## UI / UX Prototype
 
-![](https://github.com/nooneknowspeter/2024-11_fCC_projectMarkdownPreview/blob/main/public/uiuxprototype.gif)
+![UI / UX Prototype "Prototype"](https://github.com/nooneknowspeter/2024-11_fCC_projectMarkdownPreview/blob/main/public/uiuxprototype.gif)
