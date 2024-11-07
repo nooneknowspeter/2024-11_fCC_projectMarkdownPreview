@@ -58,9 +58,9 @@ And here. | Okay. | I think we get it.
 
 const TitleBar = (props) => {
   return (
-    <div className="text-center">
+    <div className="items-center text-center">
       <p
-        className={`text-base font-bold self-center h-11 select-none drop-shadow-2xl ${props.className}`}
+        className={`text-base font-bold h-11 select-none drop-shadow-2xl pt-3 ${props.className}`}
       >
         {props.title}
       </p>
@@ -72,17 +72,21 @@ const AppBranding = (props) => {
   return (
     <div
       id="titleContainer "
-      className={`basis-1/4 self-center flex flex-row select-none ${props.className}`}
+      className={`basis-1/4 self-center flex flex-row select-none place-content-center place-items-center align-middle ${props.className}`}
     >
-      <p className="text-base font-bold self-center">Markdown Previewer</p>
+      <p className="text-base font-bold self-center place-content-center items-center place-self-center align-middle">
+        Markdown Previewer
+      </p>
       <ArrowRightIcon className="size-6 ml-6" />
     </div>
   );
 };
 
 const App = () => {
+  // states
   const [markdownText, setMarkdownText] = useState<string>(defaultMarkdown);
   const [theme, setTheme] = useState("dark");
+
   // tailwind animation set to vars
   const animationPopUp: string =
     "transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105  duration-300 hover:drop-shadow-2xl";
@@ -90,6 +94,10 @@ const App = () => {
     "transition-all ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-500";
   const animationColorChange: string = `transition ease-in-out delay-100`;
 
+  // misc. vars
+  const containerStyle = "h-dvh max-h-96 p-3 w-96 overflow-auto resize-none";
+
+  // markdown parsing function
   const markdownParse = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     // console.log(event);
     setMarkdownText(event.target.value);
@@ -105,6 +113,7 @@ const App = () => {
     }
   };
 
+  // color animation function
   let themeColor = `transition-all ease-out duration-1000 delay-100 ${
     theme === "dark" ? "bg-neutral-900" : "bg-neutral-200"
   }`;
@@ -114,38 +123,39 @@ const App = () => {
       <Background />
       <Theme
         appearance={theme}
-        className="flex flex-row flex-wrap overflow-auto p-16 items-center content-center"
+        className={`flex flex-row flex-wrap p-16 place-content-center overflow-auto`}
+        panelBackground="transparent"
       >
         {/* user input */}
         <div
           id="textInputContainer"
-          className={`text-sm font-medium  basis-1/4 text-center flex-col self-start ${animationPopUp}`}
+          className={`text-sm font-medium  basis-1/4 text-center flex-col self-start w-96 ${animationPopUp}`}
         >
           <TitleBar title="Text Input" className={themeColor} />
-          <div className={`pt-3 ${themeColor}`}>
+          <div className={`pt-3   ${themeColor}`}>
             <textarea
               id="editor"
               value={markdownText}
               onChange={markdownParse}
-              className={`overflow-auto resize-none h-screen w-96 p-3 ${themeColor}`}
+              className={`${containerStyle} ${themeColor} ${
+                theme === "dark" ? "caret-neutral-200" : "bg-neutral-900"
+              }`}
             ></textarea>
           </div>
         </div>
 
         {/* app branding  */}
-        <AppBranding
-          className={`transition-all ease-out duration-1000 delay-1000 ${animationBounce}`}
-        />
+        <AppBranding className={`${animationBounce}`} />
 
         {/* preview */}
         <div
           id="preview-container"
-          className={`text-sm font-medium basis-1/4 self-end ${animationPopUp} ${animationColorChange}`}
+          className={` basis-1/4 self-end  ${animationPopUp} ${animationColorChange}`}
         >
           <TitleBar title="Preview" className={themeColor} />
           <div
             id="preview"
-            className={`overflow-auto resize-none h-screen p-3 ${themeColor}`}
+            className={`overflow-auto resize-none h-screen p-3 ${containerStyle} ${themeColor}`}
           >
             <ReactMarkdown className="">{markdownText}</ReactMarkdown>
           </div>
@@ -155,7 +165,7 @@ const App = () => {
         <div id="theme-switch "></div>
 
         <Button
-          className={`rounded-full hover:animate-pulse hover:transition-all ease-in-out duration-300`}
+          className={`rounded-full hover:animate-pulse hover:transition-all ease-in-out duration-300 fixed`}
           color="gray"
           variant="ghost"
           highContrast

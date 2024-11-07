@@ -2,8 +2,8 @@ import "@radix-ui/themes/styles.css";
 
 const Background = () => {
   return (
-    <div className="absolute">
-      <div className="size-full h-lvh m-0"></div>;
+    <div className="fixed">
+      <div className="size-full h-screen"></div>;
     </div>
   );
 };
