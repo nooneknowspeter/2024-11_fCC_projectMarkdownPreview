@@ -26,3 +26,5 @@
 - [WSL_Ubuntu](https://learn.microsoft.com/en-us/windows/wsl/)
 
 ## UI / UX Prototype
+
+![](https://github.com/nooneknowspeter/2024-11_fCC_projectMarkdownPreview/blob/main/public/uiuxprototype.gif)
