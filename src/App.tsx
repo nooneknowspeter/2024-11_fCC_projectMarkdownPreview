@@ -1,6 +1,10 @@
 import { useState } from "react";
 import "./index.css";
 import ReactMarkdown from "react-markdown";
+import {} from "@radix-ui/themes";
+import "@radix-ui/themes/styles.css";
+
+import { Theme, Flex, Text, Button } from "@radix-ui/themes";
 
 // default markdown text to fullfill userstory #5
 const defaultMarkdown = `
@@ -58,7 +62,12 @@ function App() {
   };
 
   return (
-    <>
+    <Theme>
+      <Flex direction="column" gap="2">
+        <Text>Hello from Radix Themes :)</Text>
+        <Button>Let's go</Button>
+      </Flex>
+
       <div>
         <h1>Markdown Previewer</h1>
         <div className="markdown">
@@ -72,7 +81,7 @@ function App() {
           </div>
         </div>
       </div>
-    </>
+    </Theme>
   );
 }
 
