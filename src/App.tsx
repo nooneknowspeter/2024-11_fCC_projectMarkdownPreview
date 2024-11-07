@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import { Button } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import "./components/Centralized.tsx";
+import AnimatedCursor from "react-animated-cursor";
 
 import { Theme } from "@radix-ui/themes";
 import { ArrowRightIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid";
@@ -179,6 +180,7 @@ const App = () => {
           )}
         </Button>
       </Theme>
+      <AnimatedCursor />
     </>
   );
 };
