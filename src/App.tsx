@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./index.css";
 import ReactMarkdown from "react-markdown";
-import { Button } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 
 import { Theme } from "@radix-ui/themes";
@@ -54,19 +54,43 @@ And here. | Okay. | I think we get it.
 ![freeCodeCamp Logo](https://cdn.freecodecamp.org/testable-projects-fcc/images/fcc_secondary.svg)
 `;
 
-function App() {
+const TitleBar = (props) => {
+  return (
+    <div className="text-center">
+      <p
+        className={`text-base font-bold self-center h-11 select-none ${props.className}`}
+      >
+        {props.title}
+      </p>
+    </div>
+  );
+};
+
+const AppBranding = () => {
+  return (
+    <div
+      id="titleContainer "
+      className="basis-1/4 self-center flex flex-row select-none "
+    >
+      <p className="text-base font-bold">Markdown Previewer</p>
+      <ArrowRightIcon className="size-6 ml-6" />
+    </div>
+  );
+};
+
+const App = () => {
   const [markdownText, setMarkdownText] = useState<string>(defaultMarkdown);
   const [theme, setTheme] = useState("dark");
 
   const markdownParse = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(event);
+    // console.log(event);
     setMarkdownText(event.target.value);
   };
 
   // switch themes function
 
-  const switchTheme = (event: React.SyntheticEvent<HTMLButtonElement>) => {
-    console.log(event);
+  const switchTheme = () => {
+    // console.log(event);
     if (theme === "dark") {
       setTheme("light");
     } else if (theme === "light") {
@@ -75,43 +99,67 @@ function App() {
   };
 
   return (
-    <Theme appearance={theme}>
-      <div id="textInputContainer" className="text-sm font-medium">
-        <div>
-          <p className="text-base font-bold">Text Input</p>
-        </div>
-        <div>
+    <Theme
+      appearance={theme}
+      className="flex flex-row flex-wrap overflow-auto p-16 items-center content-center"
+    >
+      {/* user input */}
+      <div
+        id="textInputContainer"
+        className="text-sm font-medium  basis-1/4 text-center flex-col self-start"
+      >
+        <TitleBar
+          title="Text Input"
+          className={theme === "dark" ? "bg-neutral-800" : "bg-neutral-100"}
+        />
+        <div
+          className={`pt-3 ${
+            theme === "dark" ? "bg-neutral-800" : "bg-neutral-100"
+          }`}
+        >
           <textarea
             id="editor"
             value={markdownText}
             onChange={markdownParse}
-            className="overflow-auto resize-none "
+            className={`overflow-auto resize-none h-screen w-96 ${
+              theme === "dark" ? "bg-neutral-800" : "bg-neutral-100"
+            }`}
           ></textarea>
         </div>
       </div>
 
-      <div id="titleContainer" className="">
-        <p className="text-base font-bold">Markdown Previewer</p>
-        <ArrowRightIcon className="size-6" />
+      {/* app branding  */}
+      <AppBranding />
+
+      {/* preview */}
+      <div
+        id="preview-container"
+        className="text-sm font-medium basis-1/4 self-end"
+      >
+        <TitleBar
+          title="Preview"
+          className={theme === "dark" ? "bg-neutral-800" : "bg-neutral-100"}
+        />
+        <div
+          id="preview"
+          className={`overflow-auto resize-none h-screen w-96 pt-3 ${
+            theme === "dark" ? "bg-neutral-800" : "bg-neutral-100"
+          }`}
+        >
+          <ReactMarkdown className="">{markdownText}</ReactMarkdown>
+        </div>
       </div>
 
-      <div className="">
-        <div id="preview-container">
-          <p className="text-base font-bold">Preview</p>
-        </div>
-        <div id="preview">
-          <ReactMarkdown>{markdownText}</ReactMarkdown>
-        </div>
-      </div>
-
-      <div id="theme-switch"></div>
+      {/* theme switcher */}
+      <div id="theme-switch "></div>
 
       <Button
-        className="rounded-full"
+        className="rounded-full absolute"
         color="gray"
         variant="ghost"
         highContrast
         onClick={switchTheme}
+        size="1"
       >
         {theme === "dark" ? (
           <MoonIcon className="size-6" />
@@ -121,6 +169,6 @@ function App() {
       </Button>
     </Theme>
   );
-}
+};
 
 export default App;
