@@ -1,10 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./index.css";
 import ReactMarkdown from "react-markdown";
-import {} from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 
-import { Theme, Flex, Text, Button } from "@radix-ui/themes";
+import { Theme } from "@radix-ui/themes";
+import { ArrowRightIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 
 // default markdown text to fullfill userstory #5
 const defaultMarkdown = `
@@ -55,28 +56,69 @@ And here. | Okay. | I think we get it.
 
 function App() {
   const [markdownText, setMarkdownText] = useState<string>(defaultMarkdown);
+  const [theme, setTheme] = useState("dark");
 
   const markdownParse = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     console.log(event);
     setMarkdownText(event.target.value);
   };
 
+  // switch themes function
+
+  const switchTheme = (event: React.SyntheticEvent<HTMLButtonElement>) => {
+    console.log(event);
+    if (theme === "dark") {
+      setTheme("light");
+    } else if (theme === "light") {
+      setTheme("dark");
+    }
+  };
+
   return (
-    <Theme>
-      <Button>Bookmark</Button>
-      <div>
-        <h1>Markdown Previewer</h1>
-        <div className="markdown">
+    <Theme appearance={theme}>
+      <div id="textInputContainer" className="text-sm font-medium">
+        <div>
+          <p className="text-base font-bold">Text Input</p>
+        </div>
+        <div>
           <textarea
             id="editor"
             value={markdownText}
             onChange={markdownParse}
+            className="overflow-auto resize-none "
           ></textarea>
-          <div id="preview">
-            <ReactMarkdown>{markdownText}</ReactMarkdown>
-          </div>
         </div>
       </div>
+
+      <div id="titleContainer" className="">
+        <p className="text-base font-bold">Markdown Previewer</p>
+        <ArrowRightIcon className="size-6" />
+      </div>
+
+      <div className="">
+        <div id="preview-container">
+          <p className="text-base font-bold">Preview</p>
+        </div>
+        <div id="preview">
+          <ReactMarkdown>{markdownText}</ReactMarkdown>
+        </div>
+      </div>
+
+      <div id="theme-switch"></div>
+
+      <Button
+        className="rounded-full"
+        color="gray"
+        variant="ghost"
+        highContrast
+        onClick={switchTheme}
+      >
+        {theme === "dark" ? (
+          <MoonIcon className="size-6" />
+        ) : (
+          <SunIcon className="size-6" />
+        )}
+      </Button>
     </Theme>
   );
 }
