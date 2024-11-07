@@ -57,7 +57,8 @@ And here. | Okay. | I think we get it.
 ![freeCodeCamp Logo](https://cdn.freecodecamp.org/testable-projects-fcc/images/fcc_secondary.svg)
 `;
 
-const TitleBar = (props) => {
+const TitleBar = (props: { className: string; title: string }) => {
+  console.log(props);
   return (
     <div className="text-center">
       <p
@@ -69,7 +70,7 @@ const TitleBar = (props) => {
   );
 };
 
-const AppBranding = (props) => {
+const AppBranding = (props: { className: string }) => {
   return (
     <div
       id="titleContainer "
@@ -86,7 +87,9 @@ const AppBranding = (props) => {
 const App = () => {
   // states
   const [markdownText, setMarkdownText] = useState<string>(defaultMarkdown);
-  const [theme, setTheme] = useState("dark");
+
+  // template union type to allow only strings dark or light since the options for the dark mode are dark, light, dark-theme, light-theme and undefined
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
 
   // tailwind animation set to vars
   const animationPopUp: string =
@@ -115,7 +118,7 @@ const App = () => {
   };
 
   // color animation function
-  let themeColor = `transition-all ease-out duration-1000 delay-100 ${
+  const themeColor = `transition-all ease-out duration-1000 delay-100 ${
     theme === "dark" ? "bg-neutral-900" : "bg-neutral-200"
   }`;
 
@@ -125,7 +128,6 @@ const App = () => {
       <Theme
         appearance={theme}
         className={`flex flex-row flex-wrap p-16 place-content-center overflow-auto gap-7`}
-        panelBackground="transparent"
       >
         {/* user input */}
         <div
@@ -203,14 +205,6 @@ const App = () => {
           ".link",
           {
             target: ".custom",
-            options: {
-              innerSize: 8,
-              outerSize: 12,
-              color: "255, 255, 255",
-              outerAlpha: 0.3,
-              innerScale: 0.7,
-              outerScale: 5,
-            },
           },
         ]}
       />
