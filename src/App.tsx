@@ -89,6 +89,7 @@ const App = () => {
   const [markdownText, setMarkdownText] = useState<string>(defaultMarkdown);
 
   // template union type to allow only strings dark or light since the options for the dark mode are dark, light, dark-theme, light-theme and undefined
+  // https://www.typescriptlang.org/static/TypeScript%20Types-ae199d69aeecf7d4a2704a528d0fd3f9.png
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 
   // tailwind animation set to vars
@@ -141,7 +142,7 @@ const App = () => {
               value={markdownText}
               onChange={markdownParse}
               className={`${containerStyle} ${themeColor} ${
-                theme === "dark" ? "caret-neutral-200" : "bg-neutral-900"
+                theme === "dark" ? "caret-neutral-200" : "caret-neutral-900"
               }`}
             ></textarea>
           </div>
