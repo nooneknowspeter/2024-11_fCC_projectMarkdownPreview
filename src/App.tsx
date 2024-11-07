@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "./index.css";
 import ReactMarkdown from "react-markdown";
-import { Button, Flex } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
+import "./components/Centralized.tsx";
 
 import { Theme } from "@radix-ui/themes";
 import { ArrowRightIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid";
+import { Background } from "./components/Centralized";
 
 // default markdown text to fullfill userstory #5
 const defaultMarkdown = `
@@ -58,7 +60,7 @@ const TitleBar = (props) => {
   return (
     <div className="text-center">
       <p
-        className={`text-base font-bold self-center h-11 select-none ${props.className}`}
+        className={`text-base font-bold self-center h-11 select-none drop-shadow-2xl ${props.className}`}
       >
         {props.title}
       </p>
@@ -66,13 +68,13 @@ const TitleBar = (props) => {
   );
 };
 
-const AppBranding = () => {
+const AppBranding = (props) => {
   return (
     <div
       id="titleContainer "
-      className="basis-1/4 self-center flex flex-row select-none "
+      className={`basis-1/4 self-center flex flex-row select-none ${props.className}`}
     >
-      <p className="text-base font-bold">Markdown Previewer</p>
+      <p className="text-base font-bold self-center">Markdown Previewer</p>
       <ArrowRightIcon className="size-6 ml-6" />
     </div>
   );
@@ -81,6 +83,12 @@ const AppBranding = () => {
 const App = () => {
   const [markdownText, setMarkdownText] = useState<string>(defaultMarkdown);
   const [theme, setTheme] = useState("dark");
+  // tailwind animation set to vars
+  const animationPopUp: string =
+    "transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105  duration-300 hover:drop-shadow-2xl";
+  const animationBounce: string =
+    "transition-all ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-500";
+  const animationColorChange: string = `transition ease-in-out delay-100`;
 
   const markdownParse = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     // console.log(event);
@@ -88,7 +96,6 @@ const App = () => {
   };
 
   // switch themes function
-
   const switchTheme = () => {
     // console.log(event);
     if (theme === "dark") {
@@ -98,76 +105,71 @@ const App = () => {
     }
   };
 
+  let themeColor = `transition-all ease-out duration-1000 delay-100 ${
+    theme === "dark" ? "bg-neutral-900" : "bg-neutral-200"
+  }`;
+
   return (
-    <Theme
-      appearance={theme}
-      className="flex flex-row flex-wrap overflow-auto p-16 items-center content-center"
-    >
-      {/* user input */}
-      <div
-        id="textInputContainer"
-        className="text-sm font-medium  basis-1/4 text-center flex-col self-start"
+    <>
+      <Background />
+      <Theme
+        appearance={theme}
+        className="flex flex-row flex-wrap overflow-auto p-16 items-center content-center"
       >
-        <TitleBar
-          title="Text Input"
-          className={theme === "dark" ? "bg-neutral-800" : "bg-neutral-100"}
-        />
+        {/* user input */}
         <div
-          className={`pt-3 ${
-            theme === "dark" ? "bg-neutral-800" : "bg-neutral-100"
-          }`}
+          id="textInputContainer"
+          className={`text-sm font-medium  basis-1/4 text-center flex-col self-start ${animationPopUp}`}
         >
-          <textarea
-            id="editor"
-            value={markdownText}
-            onChange={markdownParse}
-            className={`overflow-auto resize-none h-screen w-96 ${
-              theme === "dark" ? "bg-neutral-800" : "bg-neutral-100"
-            }`}
-          ></textarea>
+          <TitleBar title="Text Input" className={themeColor} />
+          <div className={`pt-3 ${themeColor}`}>
+            <textarea
+              id="editor"
+              value={markdownText}
+              onChange={markdownParse}
+              className={`overflow-auto resize-none h-screen w-96 p-3 ${themeColor}`}
+            ></textarea>
+          </div>
         </div>
-      </div>
 
-      {/* app branding  */}
-      <AppBranding />
-
-      {/* preview */}
-      <div
-        id="preview-container"
-        className="text-sm font-medium basis-1/4 self-end"
-      >
-        <TitleBar
-          title="Preview"
-          className={theme === "dark" ? "bg-neutral-800" : "bg-neutral-100"}
+        {/* app branding  */}
+        <AppBranding
+          className={`transition-all ease-out duration-1000 delay-1000 ${animationBounce}`}
         />
+
+        {/* preview */}
         <div
-          id="preview"
-          className={`overflow-auto resize-none h-screen w-96 pt-3 ${
-            theme === "dark" ? "bg-neutral-800" : "bg-neutral-100"
-          }`}
+          id="preview-container"
+          className={`text-sm font-medium basis-1/4 self-end ${animationPopUp} ${animationColorChange}`}
         >
-          <ReactMarkdown className="">{markdownText}</ReactMarkdown>
+          <TitleBar title="Preview" className={themeColor} />
+          <div
+            id="preview"
+            className={`overflow-auto resize-none h-screen p-3 ${themeColor}`}
+          >
+            <ReactMarkdown className="">{markdownText}</ReactMarkdown>
+          </div>
         </div>
-      </div>
 
-      {/* theme switcher */}
-      <div id="theme-switch "></div>
+        {/* theme switcher */}
+        <div id="theme-switch "></div>
 
-      <Button
-        className="rounded-full absolute"
-        color="gray"
-        variant="ghost"
-        highContrast
-        onClick={switchTheme}
-        size="1"
-      >
-        {theme === "dark" ? (
-          <MoonIcon className="size-6" />
-        ) : (
-          <SunIcon className="size-6" />
-        )}
-      </Button>
-    </Theme>
+        <Button
+          className={`rounded-full hover:animate-pulse hover:transition-all ease-in-out duration-300`}
+          color="gray"
+          variant="ghost"
+          highContrast
+          onClick={switchTheme}
+          size="1"
+        >
+          {theme === "dark" ? (
+            <MoonIcon className="size-6" />
+          ) : (
+            <SunIcon className="size-6" />
+          )}
+        </Button>
+      </Theme>
+    </>
   );
 };
 
