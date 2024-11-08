@@ -125,7 +125,6 @@ const App = () => {
 
   return (
     <>
-      <Background />
       <Theme
         appearance={theme}
         className={`flex flex-row flex-wrap p-16 place-content-center overflow-auto gap-7`}
