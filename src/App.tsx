@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./index.css";
 import ReactMarkdown from "react-markdown";
 import "@radix-ui/themes/styles.css";
 import "./components/Centralized.tsx";
 import AnimatedCursor from "react-animated-cursor";
-
 import { Theme } from "@radix-ui/themes";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ArrowRightIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 // import { Background } from "./components/Centralized";
 
@@ -101,9 +102,6 @@ const App = () => {
     "transition-all ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-500";
   const animationColorChange: string = `transition ease-in-out delay-100`;
 
-  // misc. vars
-  const containerStyle = "h-[80vh] min-h-96 w-96 p-3 overflow-auto resize-none";
-
   // markdown parsing function
   const markdownParse = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     // console.log(event);
@@ -126,12 +124,58 @@ const App = () => {
   }`;
 
   // revearl containers animation function
+  gsap.registerPlugin(useGSAP);
+
+  const textContainer = useRef();
+  const previewContainer = useRef();
+  const application = useRef();
+
   const revealContainers = () => {
-    // console.log("clicked");
     if (hidden === "hidden") {
       setHidden("");
+      gsap.fromTo(
+        textContainer.current,
+        {
+          opacity: 0,
+          x: -200,
+        },
+        {
+          opacity: 100,
+          x: 0,
+          onComplete: () => {
+            setTimeout(() => {
+              gsap.fromTo(
+                previewContainer.current,
+                { opacity: 0, x: 200, duration: 5 },
+                { x: 0, opacity: 100 }
+              );
+            }, 100);
+          },
+        }
+      );
     } else if (hidden === "") {
-      setHidden("hidden");
+      gsap.fromTo(
+        previewContainer.current,
+        { opacity: 100, x: 0 },
+        {
+          opacity: 0,
+          x: 200,
+          onComplete: () => {
+            setTimeout(() => {
+              gsap.to(textContainer.current, {
+                opacity: 0,
+                x: -200,
+                duration: 0.5,
+                onComplete: () => {
+                  setTimeout(() => {
+                    setHidden("hidden");
+                  }, 1000);
+                },
+              });
+            }, 100);
+          },
+        }
+      );
     }
   };
 
@@ -140,11 +184,13 @@ const App = () => {
       <Theme
         appearance={theme}
         className={`flex flex-row flex-wrap p-16 place-content-center overflow-auto gap-7`}
+        ref={application}
       >
         {/* user input */}
         <div
           id="textInputContainer"
-          className={`${hidden} text-sm font-medium  basis-1/4 text-center flex-col self-start w-96 ${animationPopUp}`}
+          className={`${hidden} opacity-0 text-sm font-medium  basis-1/4 text-center flex-col self-start w-96 ${animationPopUp}`}
+          ref={textContainer}
         >
           <TitleBar title="Text Input" className={`${themeColor}`} />
           <div className={`pt-3   ${themeColor}`}>
@@ -152,7 +198,7 @@ const App = () => {
               id="editor"
               value={markdownText}
               onChange={markdownParse}
-              className={`${containerStyle} ${themeColor} ${
+              className={`h-[80vh] min-h-96 w-96 p-3 overflow-auto resize-none text-balance ${themeColor} ${
                 theme === "dark" ? "caret-neutral-200" : "caret-neutral-900"
               }`}
             ></textarea>
@@ -168,31 +214,32 @@ const App = () => {
         {/* preview */}
         <div
           id="preview-container"
-          className={`${hidden} ${animationPopUp} ${animationColorChange}`}
+          className={`${hidden} opacity-0 ${animationPopUp} ${animationColorChange} h-[80vh] min-h-96 w-96 p-3 overflow-auto`}
+          ref={previewContainer}
         >
           <TitleBar title="Preview" className={themeColor} />
-          <div
-            id="preview"
-            className={`overflow-auto resize-none h-screen p-3 ${containerStyle} ${themeColor}`}
-          >
-            <ReactMarkdown className="">{markdownText}</ReactMarkdown>
+          <div id="preview" className={`${themeColor}`}>
+            <ReactMarkdown className="text-balance">
+              {markdownText}
+            </ReactMarkdown>
           </div>
         </div>
 
         {/* theme switcher */}
-        <div id="theme-switch "></div>
 
-        <a
-          className={`hover:animate-pulse hover:transition-all ease-in-out duration-300 hover:drop-shadow-2xl`}
-          color="gray"
-          onClick={switchTheme}
-        >
-          {theme === "dark" ? (
-            <MoonIcon className="size-6" />
-          ) : (
-            <SunIcon className="size-6" />
-          )}
-        </a>
+        <div id="theme-switch ">
+          <a
+            className={`hover:animate-pulse hover:transition-all ease-in-out duration-300 hover:drop-shadow-2xl`}
+            color="gray"
+            onClick={switchTheme}
+          >
+            {theme === "dark" ? (
+              <MoonIcon className="size-6" />
+            ) : (
+              <SunIcon className="size-6" />
+            )}
+          </a>
+        </div>
       </Theme>
 
       {/* animated cursor */}
