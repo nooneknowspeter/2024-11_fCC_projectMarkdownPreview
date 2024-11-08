@@ -117,89 +117,65 @@ const App = () => {
   const previewContainer = useRef<HTMLDivElement>(null);
   const application = useRef<HTMLDivElement>(null);
 
-  const revealContainers = () => {
+  const { contextSafe } = useGSAP({
+    dependencies: [hidden, application],
+    revertOnUpdate: false,
+  });
+
+  const revealContainers = contextSafe(() => {
+    const tl = gsap.timeline();
+
     if (hidden === "hidden") {
-      gsap.to(application.current, {
+      tl.to(application.current, {
+        duration: 2,
         opacity: 0,
         ease: "power2.in",
         onComplete: () => {
           setTimeout(() => {
             setHidden("");
-            gsap.to(application.current, {
-              opacity: 100,
-              ease: "power2.in",
-              onComplete: () => {
-                setTimeout(() => {
-                  gsap.fromTo(
-                    textContainer.current,
-                    {
-                      opacity: 0,
-                      x: -200,
-                    },
-                    {
-                      opacity: 100,
-                      x: 0,
-                      onComplete: () => {
-                        setTimeout(() => {
-                          gsap.fromTo(
-                            previewContainer.current,
-                            { opacity: 0, x: 200, duration: 5 },
-                            { x: 0, opacity: 100 }
-                          );
-                        }, 100);
-                      },
-                    }
-                  );
-                }, 500);
-              },
-            });
-          }, 500);
+          }, 5);
         },
-      });
+      })
+        .to(application.current, {
+          duration: 2,
+          opacity: 100,
+          ease: "power2.in",
+        })
+        .fromTo(
+          textContainer.current,
+          { duration: 0.5, opacity: 0, x: -200, ease: "power2.out" },
+          { duration: 1, opacity: 100, x: 0, ease: "bounce.in" }
+        )
+        .fromTo(
+          previewContainer.current,
+          { duration: 0.5, opacity: 0, x: 200, ease: "power2.out" },
+          { duration: 1, opacity: 100, x: 0, ease: "bounce.in" }
+        );
     } else if (hidden === "") {
-      gsap.fromTo(
-        previewContainer.current,
-        { opacity: 100, x: 0 },
-        {
+      tl.to(textContainer.current, {
+        duration: 1,
+        opacity: 0,
+        x: -200,
+        ease: "power2.out",
+      })
+        .to(previewContainer.current, { duration: 1, opacity: 0, x: 200 })
+        .to(application.current, {
+          duration: 1,
           opacity: 0,
-          x: 200,
+          ease: "power2.in",
           onComplete: () => {
             setTimeout(() => {
-              gsap.to(textContainer.current, {
-                opacity: 0,
-                x: -200,
-                onComplete: () => {
-                  gsap.to(application.current, {
-                    opacity: 0,
-                    ease: "power2.in",
-                    onComplete: () => {
-                      setTimeout(() => {
-                        setHidden("hidden");
-                        setTimeout(() => {
-                          gsap.fromTo(
-                            application.current,
-                            {
-                              opacity: 0,
-                              ease: "power2.out",
-                              onComplete: () => {},
-                            },
-                            {
-                              opacity: 100,
-                              ease: "power2.in",
-                            }
-                          );
-                        }, 1000);
-                      }, 500);
-                    },
-                  });
-                },
-              });
-            }, 500);
+              setHidden("hidden");
+            }, 50);
           },
-        }
-      );
+        })
+        .to(application.current, {
+          duration: 3,
+          opacity: 100,
+          ease: "power2.in",
+        });
     }
-  };
+  });
 
   return (
     <>
