@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import "./index.css";
-import ReactMarkdown from "react-markdown";
+import Markdown from "react-markdown";
 import "@radix-ui/themes/styles.css";
 import "./components/Centralized.tsx";
 import AnimatedCursor from "react-animated-cursor";
@@ -215,9 +215,9 @@ const App = () => {
         >
           <TitleBar title="Preview" className={themeColor} />
           <div id="preview" className={`${themeColor}`}>
-            <ReactMarkdown className="text-balance w-96 p-3 overflow-auto h-[80vh] ">
+            <Markdown className="text-balance w-96 p-3 overflow-auto h-[80vh]">
               {markdownText}
-            </ReactMarkdown>
+            </Markdown>
           </div>
         </div>
         {/* theme switcher */}
