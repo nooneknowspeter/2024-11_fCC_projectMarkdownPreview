@@ -137,7 +137,7 @@ const App = () => {
         },
       })
         .to(application.current, {
-          duration: 2,
+          duration: 1,
           opacity: 100,
           ease: "power2.in",
         })
@@ -170,7 +170,7 @@ const App = () => {
           },
         })
         .to(application.current, {
-          duration: 3,
+          duration: 2,
           opacity: 100,
           ease: "power2.in",
         });
@@ -181,7 +181,7 @@ const App = () => {
     <>
       <Theme
         appearance={theme}
-        className={`flex flex-row flex-wrap p-16 place-content-center overflow-auto gap-7`}
+        className={`h-screen justify-center place-items-center flex flex-row flex-wrap p-16 overflow-auto gap-7`}
         ref={application}
       >
         {/* user input */}
@@ -202,13 +202,11 @@ const App = () => {
             ></textarea>
           </div>
         </div>
-
         {/* app branding  */}
         <AppBranding
-          className={`${animationBounce}`}
+          className={`${animationBounce} place-content-center`}
           onClick={revealContainers}
         />
-
         {/* preview */}
         <div
           id="preview-container"
@@ -222,9 +220,7 @@ const App = () => {
             </ReactMarkdown>
           </div>
         </div>
-
         {/* theme switcher */}
-
         <div id="theme-switch">
           <a
             className={`hover:animate-pulse hover:transition-all ease-in-out duration-300 hover:drop-shadow-2xl`}

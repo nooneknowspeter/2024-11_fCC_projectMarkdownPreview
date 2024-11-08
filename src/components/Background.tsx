@@ -2,6 +2,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 // import { OrbitControls } from "@react-three/drei";
 import { useRef } from "react";
 import { Mesh } from "three";
+import "/src/index.css";
 
 const Geo = () => {
   const cubeRef = useRef<Mesh>(null);
@@ -23,16 +24,11 @@ const Geo = () => {
 
 const Background = (props: { className: string }) => {
   return (
-    <>
-      {/* bg color */}
-      <div className={`${props.className} flex flex-col h-screen`}>
-        <Canvas className="h-screen m-0 absolute">
-          <Geo />
-          <ambientLight intensity={0.5} />
-          {/* <OrbitControls /> */}
-        </Canvas>
-      </div>
-    </>
+    <Canvas className={props.className}>
+      <Geo />
+      <ambientLight intensity={0.5} />
+      {/* <OrbitControls /> */}
+    </Canvas>
   );
 };
 
