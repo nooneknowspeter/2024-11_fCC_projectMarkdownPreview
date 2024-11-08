@@ -120,27 +120,43 @@ const App = () => {
 
   const revealContainers = () => {
     if (hidden === "hidden") {
-      setHidden("");
-      gsap.fromTo(
-        textContainer.current,
-        {
-          opacity: 0,
-          x: -200,
+      gsap.to(application.current, {
+        opacity: 0,
+        ease: "power2.in",
+        onComplete: () => {
+          setTimeout(() => {
+            setHidden("");
+            gsap.to(application.current, {
+              opacity: 100,
+              ease: "power2.in",
+              onComplete: () => {
+                setTimeout(() => {
+                  gsap.fromTo(
+                    textContainer.current,
+                    {
+                      opacity: 0,
+                      x: -200,
+                    },
+                    {
+                      opacity: 100,
+                      x: 0,
+                      onComplete: () => {
+                        setTimeout(() => {
+                          gsap.fromTo(
+                            previewContainer.current,
+                            { opacity: 0, x: 200, duration: 5 },
+                            { x: 0, opacity: 100 }
+                          );
+                        }, 100);
+                      },
+                    }
+                  );
+                }, 500);
+              },
+            });
+          }, 500);
         },
-        {
-          opacity: 100,
-          x: 0,
-          onComplete: () => {
-            setTimeout(() => {
-              gsap.fromTo(
-                previewContainer.current,
-                { opacity: 0, x: 200, duration: 5 },
-                { x: 0, opacity: 100 }
-              );
-            }, 100);
-          },
-        }
-      );
+      });
     } else if (hidden === "") {
       gsap.fromTo(
         previewContainer.current,
@@ -153,14 +169,33 @@ const App = () => {
               gsap.to(textContainer.current, {
                 opacity: 0,
                 x: -200,
-                duration: 0.5,
                 onComplete: () => {
-                  setTimeout(() => {
-                    setHidden("hidden");
-                  }, 1000);
+                  gsap.to(application.current, {
+                    opacity: 0,
+                    ease: "power2.in",
+                    onComplete: () => {
+                      setTimeout(() => {
+                        setHidden("hidden");
+                        setTimeout(() => {
+                          gsap.fromTo(
+                            application.current,
+                            {
+                              opacity: 0,
+                              ease: "power2.out",
+                              onComplete: () => {},
+                            },
+                            {
+                              opacity: 100,
+                              ease: "power2.in",
+                            }
+                          );
+                        }, 1000);
+                      }, 500);
+                    },
+                  });
                 },
               });
-            }, 100);
+            }, 500);
           },
         }
       );
@@ -202,7 +237,7 @@ const App = () => {
         {/* preview */}
         <div
           id="preview-container"
-          className={`${hidden} opacity-0  ${animationColorChange} ${animationPopUp} `}
+          className={`${hidden} opacity-0 ${animationColorChange} ${animationPopUp} `}
           ref={previewContainer}
         >
           <TitleBar title="Preview" className={themeColor} />
