@@ -1,3 +1,4 @@
 import Background from "./Background";
+import AppBranding from "./AppBranding";
 
-export { Background };
+export { Background, AppBranding };

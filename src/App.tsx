@@ -7,8 +7,11 @@ import AnimatedCursor from "react-animated-cursor";
 import { Theme } from "@radix-ui/themes";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ArrowRightIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid";
-// import { Background } from "./components/Centralized";
+import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
+
+// import components from centralized file
+import { AppBranding } from "./components/Centralized";
+// Background
 
 // default markdown text to fullfill userstory #5
 const defaultMarkdown = `
@@ -70,21 +73,6 @@ const TitleBar = (props: { className: string; title: string }) => {
   );
 };
 
-const AppBranding = (props: { className: string; onClick: () => void }) => {
-  return (
-    <a
-      id="titleContainer "
-      className={`basis-1/4 self-center flex flex-row select-none place-content-center place-items-center align-middle ${props.className}`}
-      onClick={props.onClick}
-    >
-      <p className="text-base font-bold self-center place-content-center items-center place-self-center align-middle">
-        Markdown Previewer
-      </p>
-      <ArrowRightIcon className="size-6 ml-6" />
-    </a>
-  );
-};
-
 const App = () => {
   // states
   const [markdownText, setMarkdownText] = useState<string>(defaultMarkdown);
@@ -126,9 +114,9 @@ const App = () => {
   // revearl containers animation function
   gsap.registerPlugin(useGSAP);
 
-  const textContainer = useRef();
-  const previewContainer = useRef();
-  const application = useRef();
+  const textContainer = useRef<HTMLDivElement>(null);
+  const previewContainer = useRef<HTMLDivElement>(null);
+  const application = useRef<HTMLDivElement>(null);
 
   const revealContainers = () => {
     if (hidden === "hidden") {
@@ -214,12 +202,12 @@ const App = () => {
         {/* preview */}
         <div
           id="preview-container"
-          className={`${hidden} opacity-0 ${animationPopUp} ${animationColorChange} h-[80vh] min-h-96 w-96 p-3 overflow-auto`}
+          className={`${hidden} opacity-0  ${animationColorChange} ${animationPopUp} `}
           ref={previewContainer}
         >
           <TitleBar title="Preview" className={themeColor} />
           <div id="preview" className={`${themeColor}`}>
-            <ReactMarkdown className="text-balance">
+            <ReactMarkdown className="text-balance w-96 p-3 overflow-auto h-[80vh] ">
               {markdownText}
             </ReactMarkdown>
           </div>
