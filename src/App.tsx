@@ -11,7 +11,6 @@ import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 
 // import components from centralized file
 import { AppBranding } from "./components/Centralized";
-// Background
 
 // default markdown text to fullfill userstory #5
 const defaultMarkdown = `
@@ -61,7 +60,7 @@ And here. | Okay. | I think we get it.
 `;
 
 const TitleBar = (props: { className: string; title: string }) => {
-  console.log(props);
+  // console.log(props);
   return (
     <div className="text-center">
       <p
@@ -250,7 +249,7 @@ const App = () => {
 
         {/* theme switcher */}
 
-        <div id="theme-switch ">
+        <div id="theme-switch">
           <a
             className={`hover:animate-pulse hover:transition-all ease-in-out duration-300 hover:drop-shadow-2xl`}
             color="gray"
