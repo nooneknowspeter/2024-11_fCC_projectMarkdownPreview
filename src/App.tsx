@@ -70,17 +70,18 @@ const TitleBar = (props: { className: string; title: string }) => {
   );
 };
 
-const AppBranding = (props: { className: string }) => {
+const AppBranding = (props: { className: string; onClick: () => void }) => {
   return (
-    <div
+    <a
       id="titleContainer "
       className={`basis-1/4 self-center flex flex-row select-none place-content-center place-items-center align-middle ${props.className}`}
+      onClick={props.onClick}
     >
       <p className="text-base font-bold self-center place-content-center items-center place-self-center align-middle">
         Markdown Previewer
       </p>
       <ArrowRightIcon className="size-6 ml-6" />
-    </div>
+    </a>
   );
 };
 
@@ -88,19 +89,21 @@ const App = () => {
   // states
   const [markdownText, setMarkdownText] = useState<string>(defaultMarkdown);
 
+  const [hidden, setHidden] = useState<string>("hidden");
+
   // template union type to allow only strings dark or light since the options for the dark mode are dark, light, dark-theme, light-theme and undefined
   // https://www.typescriptlang.org/static/TypeScript%20Types-ae199d69aeecf7d4a2704a528d0fd3f9.png
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 
   // tailwind animation set to vars
   const animationPopUp: string =
-    "transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105  duration-300 hover:drop-shadow-2xl";
+    "transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-300 hover:drop-shadow-2xl";
   const animationBounce: string =
     "transition-all ease-in-out delay-150 hover:-translate-y-1 hover:scale-100 duration-500";
   const animationColorChange: string = `transition ease-in-out delay-100`;
 
   // misc. vars
-  const containerStyle = "h-dvh max-h-96 w-96 p-3 overflow-auto resize-none";
+  const containerStyle = "h-[80vh] min-h-96 w-96 p-3 overflow-auto resize-none";
 
   // markdown parsing function
   const markdownParse = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -123,6 +126,16 @@ const App = () => {
     theme === "dark" ? "bg-neutral-900" : "bg-neutral-200"
   }`;
 
+  // revearl containers animation function
+  const revealContainers = () => {
+    console.log("clicked");
+    if (hidden === "hidden") {
+      setHidden("");
+    } else if (hidden === "") {
+      setHidden("hidden");
+    }
+  };
+
   return (
     <>
       <Theme
@@ -130,9 +143,9 @@ const App = () => {
         className={`flex flex-row flex-wrap p-16 place-content-center overflow-auto gap-7`}
       >
         {/* user input */}
-        {/* <div
+        <div
           id="textInputContainer"
-          className={`text-sm font-medium  basis-1/4 text-center flex-col self-start w-96 ${animationPopUp}`}
+          className={`${hidden} text-sm font-medium  basis-1/4 text-center flex-col self-start w-96 ${animationPopUp}`}
         >
           <TitleBar title="Text Input" className={`${themeColor}`} />
           <div className={`pt-3   ${themeColor}`}>
@@ -145,15 +158,18 @@ const App = () => {
               }`}
             ></textarea>
           </div>
-        </div> */}
+        </div>
 
         {/* app branding  */}
-        <AppBranding className={`${animationBounce}`} />
+        <AppBranding
+          className={`${animationBounce}`}
+          onClick={revealContainers}
+        />
 
         {/* preview */}
-        {/* <div
+        <div
           id="preview-container"
-          className={` ${animationPopUp} ${animationColorChange}`}
+          className={`${hidden} ${animationPopUp} ${animationColorChange}`}
         >
           <TitleBar title="Preview" className={themeColor} />
           <div
@@ -162,12 +178,12 @@ const App = () => {
           >
             <ReactMarkdown className="">{markdownText}</ReactMarkdown>
           </div>
-        </div> */}
+        </div>
 
         {/* theme switcher */}
         <div id="theme-switch "></div>
 
-        <Button
+        <a
           className={`hover:animate-pulse hover:transition-all ease-in-out duration-300`}
           color="gray"
           variant="ghost"
@@ -176,11 +192,11 @@ const App = () => {
           size="1"
         >
           {theme === "dark" ? (
-            <MoonIcon className="size-6" />
+            <MoonIcon className="transition ease-in-out delay-75 duration-300 hover:drop-shadow-2xl size-6" />
           ) : (
-            <SunIcon className="size-6" />
+            <SunIcon className="transition ease-in-out delay-75 duration-300 hover:drop-shadow-2xl size-6" />
           )}
-        </Button>
+        </a>
       </Theme>
 
       {/* animated cursor */}
