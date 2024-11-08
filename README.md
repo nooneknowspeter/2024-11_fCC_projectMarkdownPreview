@@ -10,6 +10,7 @@
 - [GitHub](https://github.com/)
 - [GLSL](https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_on_the_web/GLSL_Shaders)
 - [glslify](https://github.com/glslify/glslify)
+- [GSAP](https://gsap.com/docs/v3/)
 - [Figma](https://www.figma.com/)
 - [heroicons](https://heroicons.com/)
 - [React](https://react.dev/)

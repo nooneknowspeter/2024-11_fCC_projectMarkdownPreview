@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import "./index.css";
 import ReactMarkdown from "react-markdown";
-import { Button } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import "./components/Centralized.tsx";
 import AnimatedCursor from "react-animated-cursor";
 
 import { Theme } from "@radix-ui/themes";
 import { ArrowRightIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid";
-import { Background } from "./components/Centralized";
+// import { Background } from "./components/Centralized";
 
 // default markdown text to fullfill userstory #5
 const defaultMarkdown = `
@@ -128,7 +127,7 @@ const App = () => {
 
   // revearl containers animation function
   const revealContainers = () => {
-    console.log("clicked");
+    // console.log("clicked");
     if (hidden === "hidden") {
       setHidden("");
     } else if (hidden === "") {
@@ -184,17 +183,14 @@ const App = () => {
         <div id="theme-switch "></div>
 
         <a
-          className={`hover:animate-pulse hover:transition-all ease-in-out duration-300`}
+          className={`hover:animate-pulse hover:transition-all ease-in-out duration-300 hover:drop-shadow-2xl`}
           color="gray"
-          variant="ghost"
-          highContrast
           onClick={switchTheme}
-          size="1"
         >
           {theme === "dark" ? (
-            <MoonIcon className="transition ease-in-out delay-75 duration-300 hover:drop-shadow-2xl size-6" />
+            <MoonIcon className="size-6" />
           ) : (
-            <SunIcon className="transition ease-in-out delay-75 duration-300 hover:drop-shadow-2xl size-6" />
+            <SunIcon className="size-6" />
           )}
         </a>
       </Theme>
